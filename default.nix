@@ -14,11 +14,12 @@
 , haskellOverlaysPre ? []
 , haskellOverlaysPost ? haskellOverlays
 , hideDeprecated ? false # The moral equivalent of "-Wcompat -Werror" for using reflex-platform.
+, minimalProfile ? false
+, iosSupport ? system == "x86_64-darwin" && (! minimalProfile)
+, androidSupport ? builtins.elem system [ "x86_64-linux" ] && (! minimalProfile)
+, hieSupport ? (! minimalProfile)
 }:
-let iosSupport = system == "x86_64-darwin";
-    androidSupport = lib.elem system [ "x86_64-linux" ];
-
-    # Overlay for GHC with -load-splices & -save-splices option
+let # Overlay for GHC with -load-splices & -save-splices option
     splicesEval = self: super: {
       haskell = super.haskell // {
         compiler = super.haskell.compiler // {
@@ -370,6 +371,7 @@ in let this = rec {
       pkgconfig
       closurecompiler
       ;
+  } // lib.optionalAttrs hieSupport {
     haskell-ide-engine = nixpkgs.haskell.lib.justStaticExecutables (nativeHaskellPackages.override {
       overrides = nixpkgs.haskell.overlays.hie;
     }).haskell-ide-engine;
