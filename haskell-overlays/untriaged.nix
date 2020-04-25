@@ -23,7 +23,7 @@ in self: super: {
   haven = self.callHackage "haven" "0.2.0.2" {};
 
   # Update hlint and add new dependency
-  hlint = self.callHackage "hlint" "2.2.2" {};
+  # hlint = doself.callHackage "hlint" "2.2.2" {};
   ghc-lib-parser = self.callHackage "ghc-lib-parser" "8.8.0.20190723" {};
   haskell-src-exts-util = self.callHackage "haskell-src-exts-util" "0.2.5" {};
   stylish-haskell = self.callHackage "stylish-haskell" "0.9.2.2" {};

@@ -1,7 +1,7 @@
 {
   "owner": "nixos",
   "repo": "nixpkgs",
-  "branch": "release-19.09",
-  "rev": "49550f29cd9d6ed27f4a76ba3c3fe30edf882eb7",
-  "sha256": "003fpkrcc5mw33q670q4z865zpr430cllbxhyzj8k9p4hbc8yqda"
+  "rev": "10b4ab669e6afd991f538e6bd939f4b2909734b9",
+  "sha256": "151a039a6mv450npyrzbyykazl58vbwpmimlmmxv3f1mxv4skb68",
+  "branch": "haskell-updates"
 }

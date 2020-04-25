@@ -31,12 +31,13 @@ self: super: {
 
   ghcjs-base = doJailbreak (dontCheck (self.callCabal2nix "ghcjs-base" self._dep.ghcjsBaseSrc {}));
 
-  ghc = if !(lib.versionAtLeast super.ghc.ghcVersion "8.2") then super.ghc else super.ghc.overrideAttrs (_: {
-    # TODO: I don't think this is needed except for maybe the fast-weak patch, but doing this to preserve hashes.
-    phases = [ "unpackPhase" "patchPhase" "buildPhase" ];
-  }) // {
-    withPackages = self.ghcWithPackages;
-  };
+  ghc = super.ghc;
+  # ghc = if !(lib.versionAtLeast super.ghc.ghcVersion "8.2") then super.ghc else super.ghc.overrideAttrs (_: {
+  #   # TODO: I don't think this is needed except for maybe the fast-weak patch, but doing this to preserve hashes.
+  #   phases = [ "unpackPhase" "buildPhase" ];
+  # }) // {
+  #   withPackages = self.ghcWithPackages;
+  # };
 
   # doctest doesn't work on ghcjs, but sometimes dontCheck doesn't seem to get rid of the dependency
   doctest = lib.warn "ignoring dependency on doctest" null;

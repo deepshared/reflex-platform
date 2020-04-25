@@ -32,6 +32,14 @@ rec {
   ## Conventional roll ups of all the constituent overlays below.
   ##
 
+  # dont-patch-ghc = self: super: {
+  #   ghc = super.ghc.overrideAttrs (drv: {
+  #     phases = [ "unpackPhase" "configurePhase" "buildPhase" ];
+  #     # patches = [];
+  #     # patches = "";
+  #   });
+  # };
+
   # `super.ghc` is used so that the use of an overlay does not depend on that
   # overlay. At the cost of violating the usual rules on using `self` vs
   # `super`, this avoids a bunch of strictness issues keeping us terminating.
@@ -49,7 +57,12 @@ rec {
     (optionalExtension (super.ghc.isGhcjs or false) combined-ghcjs)
 
     (optionalExtension (super.ghc.isGhcjs or false && useTextJSString) textJSString)
-    (optionalExtension (with nixpkgs.stdenv; versionWildcard [ 8 6 ] super.ghc.version && !(super.ghc.isGhcjs or false) && hostPlatform != buildPlatform) loadSplices)
+    (optionalExtension (with nixpkgs.stdenv;
+                         !(super.ghc.isGhcjs or false)
+                         && hostPlatform != buildPlatform
+                         && (   versionWildcard [ 8 6 ] super.ghc.version
+                             || versionWildcard [ 8 6 ] super.ghc.version))
+                       loadSplices)
 
     (optionalExtension (nixpkgs.stdenv.hostPlatform.useAndroidPrebuilt or false) android)
     (optionalExtension (nixpkgs.stdenv.hostPlatform.isiOS or false) ios)
@@ -65,17 +78,20 @@ rec {
   combined-any-8 = self: super: foldExtensions [
     any-8
     (optionalExtension (versionWildcard [ 8 6 ] (getGhcVersion super.ghc)) any-8_6)
-    (optionalExtension (lib.versionOlder "8.7"  (getGhcVersion super.ghc)) any-head)
+    (optionalExtension (versionWildcard [ 8 8 ] (getGhcVersion super.ghc)) any-8_8)
+    (optionalExtension (lib.versionOlder "8.9"  (getGhcVersion super.ghc)) any-head)
   ] self super;
 
   combined-ghc = self: super: foldExtensions [
     (optionalExtension (versionWildcard [ 8 6 ] super.ghc.version) ghc-8_6)
-    (optionalExtension (lib.versionOlder "8.7"  super.ghc.version) ghc-head)
+    (optionalExtension (versionWildcard [ 8 8 ] super.ghc.version) ghc-8_8)
+    (optionalExtension (lib.versionOlder "8.9"  super.ghc.version) ghc-head)
   ] self super;
 
   combined-ghcjs = self: super: foldExtensions [
     ghcjs
     (optionalExtension (versionWildcard [ 8 6 ] super.ghc.ghcVersion) ghcjs-8_6)
+    (optionalExtension (versionWildcard [ 8 8 ] super.ghc.ghcVersion) ghcjs-8_8)
     (optionalExtension useFastWeak ghcjs-fast-weak)
   ] self super;
 
@@ -96,13 +112,18 @@ rec {
   };
 
   # For GHC and GHCJS
+  # any = dont-patch-ghc;
   any = _: _: {};
   any-8 = import ./any-8.nix { inherit haskellLib lib getGhcVersion; };
   any-8_6 = import ./any-8.6.nix { inherit haskellLib fetchFromGitHub; inherit (nixpkgs) pkgs; };
+  # any-8_8 = dont-patch-ghc;
+  any-8_8 = import ./any-8.8.nix { inherit haskellLib fetchFromGitHub; inherit (nixpkgs) pkgs; };
   any-head = import ./any-head.nix { inherit haskellLib fetchFromGitHub; };
 
   # Just for GHC, usually to sync with GHCJS
   ghc-8_6 = _: _: {};
+  ghc-8_8 = _: _: {};
+  # ghc-8_8 = dont-patch-ghc;
   ghc-head = _: _: {};
 
   profiling = import ./profiling.nix {
@@ -131,6 +152,9 @@ rec {
    inherit lib;
   };
   ghcjs-8_6 = optionalExtension useTextJSString
+    (import ./ghcjs-8.6-text-jsstring.nix { inherit lib fetchgit; });
+  # ghcjs-8_8 = dont-patch-ghc;
+  ghcjs-8_8 = optionalExtension useTextJSString
     (import ./ghcjs-8.6-text-jsstring.nix { inherit lib fetchgit; });
 
   android = import ./android {

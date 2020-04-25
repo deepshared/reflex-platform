@@ -2,17 +2,17 @@
 , system ? builtins.currentSystem
 , config ? {}
 , enableLibraryProfiling ? false
-, enableExposeAllUnfoldings ? true
+, enableExposeAllUnfoldings ? false # true
 , enableTraceReflexEvents ? false
-, useFastWeak ? true
+, useFastWeak ? false # true
 , useReflexOptimizer ? false
-, useTextJSString ? true # Use an implementation of "Data.Text" that uses the more performant "Data.JSString" from ghcjs-base under the hood.
+, useTextJSString ? false # true # Use an implementation of "Data.Text" that uses the more performant "Data.JSString" from ghcjs-base under the hood.
 , __useTemplateHaskell ? true # Deprecated, just here until we remove feature from reflex and stop CIing it
 , iosSdkVersion ? "10.2"
 , nixpkgsOverlays ? []
 , haskellOverlays ? [] # TODO deprecate
 , haskellOverlaysPre ? []
-, haskellOverlaysPost ? haskellOverlays
+, haskellOverlaysPost ? [] #haskellOverlays
 , hideDeprecated ? false # The moral equivalent of "-Wcompat -Werror" for using reflex-platform.
 , hieSupport ? true
 }:
@@ -190,7 +190,7 @@ let iosSupport = system == "x86_64-darwin";
       })
     ]);
   };
-  ghcjs = ghcjs8_6;
+  ghcjs = ghcjs8_8;
   ghcjs8_6 = (makeRecursivelyOverridable (nixpkgsCross.ghcjs.haskell.packages.ghcjs86.override (old: {
     ghc = old.ghc.override {
       bootPkgs = nixpkgsCross.ghcjs.buildPackages.haskell.packages.ghc865;
@@ -204,12 +204,29 @@ let iosSupport = system == "x86_64-darwin";
   }))).override {
     overrides = nixpkgsCross.ghcjs.haskell.overlays.combined;
   };
+  ghcjs8_8 = (makeRecursivelyOverridable (nixpkgsCross.ghcjs.haskell.packages.ghcjs88.override (old: {
+    ghc = old.ghc.override {
+      bootPkgs = nixpkgsCross.ghcjs.buildPackages.haskell.packages.ghc883;
+      ghcjsSrc = fetchgit {
+        url = "https://github.com/obsidiansystems/ghcjs.git";
+        rev = "06f81b44c3cc6c7f75e1a5a20d918bad37294b52";
+        sha256 = "02mwkf7aagxqi142gcmq048244apslrr72p568akcab9s0fn2gvy";
+        fetchSubmodules = true;
+      };
+    };
+  }))).override {
+    overrides = nixpkgsCross.ghcjs.haskell.overlays.combined;
+  };
 
-  ghc = ghc8_6;
+  ghc = ghc8_8;
   ghcHEAD = (makeRecursivelyOverridable nixpkgs.haskell.packages.ghcHEAD).override {
     overrides = nixpkgs.haskell.overlays.combined;
   };
   ghc8_6 = (makeRecursivelyOverridable nixpkgs.haskell.packages.ghc865).override {
+    overrides = nixpkgs.haskell.overlays.combined;
+  };
+  # ghc8_8 = makeRecursivelyOverridable nixpkgs.haskell.packages.ghc883;
+  ghc8_8 = (makeRecursivelyOverridable nixpkgs.haskell.packages.ghc883).override {
     overrides = nixpkgs.haskell.overlays.combined;
   };
 
@@ -282,6 +299,7 @@ in let this = rec {
           ghc
           ghcHEAD
           ghc8_6
+          ghc8_8
           ghcIosSimulator64
           ghcIosAarch64
           ghcIosAarch64-8_6
@@ -291,8 +309,9 @@ in let this = rec {
           ghcAndroidAarch64-8_6
           ghcAndroidAarch32
           ghcAndroidAarch32-8_6
-          ghcjs
-          ghcjs8_6
+          # ghcjs
+          # ghcjs8_6
+          # ghcjs8_8
           ghcSavedSplices
           android
           androidWithHaskellPackages
@@ -368,11 +387,11 @@ in let this = rec {
       Cabal
       cabal-install
       ghcid
-      hasktags
-      hdevtools
+      # hasktags
+      # hdevtools
       hlint
-      stylish-haskell # Recent stylish-haskell only builds with AMP in place
-      reflex-ghci
+      # stylish-haskell # Recent stylish-haskell only builds with AMP in place
+      # reflex-ghci
       ;
     inherit (nixpkgs)
       cabal2nix
