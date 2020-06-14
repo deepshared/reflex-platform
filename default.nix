@@ -389,7 +389,7 @@ in let this = rec {
       ghcid
       # hasktags
       # hdevtools
-      hlint
+      # hlint
       # stylish-haskell # Recent stylish-haskell only builds with AMP in place
       # reflex-ghci
       ;
