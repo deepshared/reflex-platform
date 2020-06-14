@@ -1,7 +1,7 @@
 {
   "owner": "nixos",
   "repo": "nixpkgs",
-  "rev": "10b4ab669e6afd991f538e6bd939f4b2909734b9",
-  "sha256": "151a039a6mv450npyrzbyykazl58vbwpmimlmmxv3f1mxv4skb68",
+  "rev": "05daa18777bf4d68adcb477a08147cc8fc03328c",
+  "sha256": "0vw3kma65f0q25ra0znsi3di9p7qjk8bc34jr55c4rz0kfwincgq",
   "branch": "haskell-updates"
 }
