@@ -101,15 +101,15 @@ in
   ## Terminal / Conventional OS
   ##
 
-  reflex-vty = self.callHackage "reflex-vty" "0.1.4.1" {};
-  reflex-process = self.callHackage "reflex-process" "0.3.1.0" {};
-  reflex-fsnotify = self.callHackage "reflex-fsnotify" "0.2.1.2" {};
+  reflex-vty = doJailbreak (self.callHackage "reflex-vty" "0.1.4.1" {});
+  reflex-process = doJailbreak (self.callHackage "reflex-process" "0.3.1.0" {});
+  reflex-fsnotify = doJailbreak (self.callHackage "reflex-fsnotify" "0.2.1.2" {});
 
   ##
   ## Tooling
   ##
 
-  reflex-ghci = self.callHackage "reflex-ghci" "0.1.5.1" {};
+  reflex-ghci = doJailbreak (self.callHackage "reflex-ghci" "0.1.5.1" {});
 
   ##
   ## GHCJS and JSaddle
@@ -142,58 +142,58 @@ in
   ## Gargoyle and dependencies
   ##
 
-  gargoyle = self.callCabal2nixWithOptions "gargoyle" gargoyleSrc "--subpath gargoyle" {};
-  gargoyle-postgresql = haskellLib.overrideCabal
-    (self.callCabal2nixWithOptions "gargoyle-postgresql" gargoyleSrc "--subpath gargoyle-postgresql" {})
-    (drv: {
-      testSystemDepends = (drv.testSystemDepends or []) ++ [ nixpkgs.postgresql_10 ];
-    });
-  gargoyle-postgresql-nix = haskellLib.overrideCabal
-    (self.callCabal2nixWithOptions "gargoyle-postgresql-nix" gargoyleSrc "--subpath gargoyle-postgresql-nix" {})
-    (drv: {
-      librarySystemDepends = (drv.librarySystemDepends or []) ++ [ nixpkgs.postgresql_10 ];
-    });
-  gargoyle-postgresql-connect = self.callCabal2nixWithOptions "gargoyle-postgresql-connect" gargoyleSrc "--subpath gargoyle-postgresql-connect" {};
-  which = self.callHackage "which" "0.2" {};
+  # gargoyle = self.callCabal2nixWithOptions "gargoyle" gargoyleSrc "--subpath gargoyle" {};
+  # gargoyle-postgresql = haskellLib.overrideCabal
+  #   (self.callCabal2nixWithOptions "gargoyle-postgresql" gargoyleSrc "--subpath gargoyle-postgresql" {})
+  #   (drv: {
+  #     testSystemDepends = (drv.testSystemDepends or []) ++ [ nixpkgs.postgresql_10 ];
+  #   });
+  # gargoyle-postgresql-nix = haskellLib.overrideCabal
+  #   (self.callCabal2nixWithOptions "gargoyle-postgresql-nix" gargoyleSrc "--subpath gargoyle-postgresql-nix" {})
+  #   (drv: {
+  #     librarySystemDepends = (drv.librarySystemDepends or []) ++ [ nixpkgs.postgresql_10 ];
+  #   });
+  # gargoyle-postgresql-connect = self.callCabal2nixWithOptions "gargoyle-postgresql-connect" gargoyleSrc "--subpath gargoyle-postgresql-connect" {};
+  # which = self.callHackage "which" "0.2" {};
 
   ##
   ## Misc other dependencies
   ##
 
-  haskell-gi-overloading = dontHaddock (self.callHackage "haskell-gi-overloading" "0.0" {});
-  monoidal-containers = self.callHackage "monoidal-containers" "0.6.0.1" {};
-  patch = self.callHackage "patch" "0.0.3.2" {};
+  # haskell-gi-overloading = dontHaddock (self.callHackage "haskell-gi-overloading" "0.0" {});
+  # monoidal-containers = self.callHackage "monoidal-containers" "0.6.0.1" {};
+  # patch = self.callHackage "patch" "0.0.3.2" {};
 
-  webdriver = self.callHackage "webdriver" "0.9.0.1" {};
+  # webdriver = self.callHackage "webdriver" "0.9.0.1" {};
 
   # Not on Hackage yet
   # Version 1.2.1 not on Hackage yet
-  hspec-webdriver = self.callCabal2nix "hspec-webdriver" (fetchFromGitHub {
-    owner = "dfordivam";
-    repo = "hspec-webdriver-clone";
-    rev = "0d748b7bb7cd74dce0a55a1ec86b01dbb8a71cd8";
-    sha256 = "1criynifhvmnqwhrshmzylikqkvlgq98xf72w9cdd2zpjw539qf0";
-  }) {};
+  # hspec-webdriver = self.callCabal2nix "hspec-webdriver" (fetchFromGitHub {
+  #   owner = "dfordivam";
+  #   repo = "hspec-webdriver-clone";
+  #   rev = "0d748b7bb7cd74dce0a55a1ec86b01dbb8a71cd8";
+  #   sha256 = "1criynifhvmnqwhrshmzylikqkvlgq98xf72w9cdd2zpjw539qf0";
+  # }) {};
 
-  constraints-extras = self.callHackage "constraints-extras" "0.3.0.2" {};
-  some = self.callHackage "some" "1.0.1" {};
-  prim-uniq = self.callHackage "prim-uniq" "0.2" {};
-  aeson-gadt-th = self.callHackage "aeson-gadt-th" "0.2.4" {};
-  dependent-map = self.callHackage "dependent-map" "0.4.0.0" {};
-  dependent-sum = self.callHackage "dependent-sum" "0.7.1.0" {};
-  dependent-sum-template = self.callHackage "dependent-sum-template" "0.1.0.3" {};
-  dependent-sum-universe-orphans = self.callCabal2nix "dependent-sum-universe-orphans" self._dep.dependent-sum-universe-orphans {};
-  dependent-sum-aeson-orphans = self.callHackage "dependent-sum-aeson-orphans" "0.3.0.0" {};
+  # constraints-extras = self.callHackage "constraints-extras" "0.3.0.2" {};
+  # some = self.callHackage "some" "1.0.1" {};
+  # prim-uniq = self.callHackage "prim-uniq" "0.2" {};
+  # aeson-gadt-th = self.callHackage "aeson-gadt-th" "0.2.4" {};
+  # dependent-map = self.callHackage "dependent-map" "0.4.0.0" {};
+  # dependent-sum = self.callHackage "dependent-sum" "0.7.1.0" {};
+  # dependent-sum-template = self.callHackage "dependent-sum-template" "0.1.0.3" {};
+  # dependent-sum-universe-orphans = self.callCabal2nix "dependent-sum-universe-orphans" self._dep.dependent-sum-universe-orphans {};
+  # dependent-sum-aeson-orphans = self.callHackage "dependent-sum-aeson-orphans" "0.3.0.0" {};
 
   # Need to use `--subpath` because LICENSE in each dir is a symlink to the repo root.
-  universe = self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe" {};
-  universe-base = self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe-base" {};
-  universe-dependent-sum = nixpkgs.haskell.lib.doJailbreak (self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe-dependent-sum" {});
-  universe-instances-extended = self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe-instances-extended" {};
-  universe-reverse-instances = self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe-reverse-instances" {};
-  universe-instances-base = self.callCabal2nixWithOptions "universe" universeRepo "--subpath deprecated/universe-instances-base" {};
+  # universe = self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe" {};
+  # universe-base = self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe-base" {};
+  # universe-dependent-sum = nixpkgs.haskell.lib.doJailbreak (self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe-dependent-sum" {});
+  # universe-instances-extended = self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe-instances-extended" {};
+  # universe-reverse-instances = self.callCabal2nixWithOptions "universe" universeRepo "--subpath universe-reverse-instances" {};
+  # universe-instances-base = self.callCabal2nixWithOptions "universe" universeRepo "--subpath deprecated/universe-instances-base" {};
 
-  # Needed to fix cross compilation from macOS to elsewhere
-  # https://github.com/danfran/cabal-macosx/pull/14
-  cabal-macosx = self.callCabal2nix "cabal-macosx" self._dep.cabal-macosx {};
+  # # Needed to fix cross compilation from macOS to elsewhere
+  # # https://github.com/danfran/cabal-macosx/pull/14
+  # cabal-macosx = self.callCabal2nix "cabal-macosx" self._dep.cabal-macosx {};
 }

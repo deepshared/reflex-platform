@@ -1,8 +1,8 @@
 {
-  "owner": "obsidiansystems",
+  "owner": "NixOs",
   "repo": "nixpkgs",
   "branch": "reflex-platform-wasm-support",
   "private": false,
-  "rev": "a5cc7b77c090ede3ac380962ea876b83d847592c",
-  "sha256": "0mfrfrgkc8bfc3hcnbzqmab021i3w27mczak99ab4ca154ml297i"
+  "rev": "4f2880ba128a8f254bea5459d3326edea4d3933d",
+  "sha256": "1dsi1x2z5dqw66jr8b1ydgq1bxg2fybgic3aq6kvjy6qvra2iyrx"
 }

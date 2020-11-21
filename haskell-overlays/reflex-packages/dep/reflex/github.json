@@ -1,8 +1,8 @@
 {
-  "owner": "reflex-frp",
+  "owner": "deepfire",
   "repo": "reflex",
-  "branch": "ghc810",
+  "branch": "lift-ghc810",
   "private": false,
-  "rev": "78ee62ac6a9be683cc8e831c3f57e1cb97de0dac",
-  "sha256": "0aq3d3gh94cq09mp8338bp0kckzzvp12rms791gwd749jsljhd7k"
+  "rev": "a7c88c970e76818a34ba3f526efb88f165fc2e5a",
+  "sha256": "1nynr6z7gwismrwlbrzdi53a74li3cg5rzsw7p6jx9kik7r8cjdl"
 }

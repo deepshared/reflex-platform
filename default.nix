@@ -16,7 +16,7 @@
 , hideDeprecated ? false # The moral equivalent of "-Wcompat -Werror" for using reflex-platform.
 }:
 let iosSupport = system == "x86_64-darwin";
-    androidSupport = lib.elem system [ "x86_64-linux" ];
+    androidSupport = false;
 
     # Overlay for GHC with -load-splices & -save-splices option
     splicesEval = self: super: {
@@ -217,7 +217,10 @@ let iosSupport = system == "x86_64-darwin";
     overrides = nixpkgsCross.wasm.haskell.overlays.combined;
   });
 
-  ghc = ghc8_6;
+  ghc = ghc8_10;
+  ghc8_10 = (makeRecursivelyOverridable nixpkgs.haskell.packages.ghc8102).override {
+    overrides = nixpkgs.haskell.overlays.combined;
+  };
   ghcHEAD = (makeRecursivelyOverridable nixpkgs.haskell.packages.ghcHEAD).override {
     overrides = nixpkgs.haskell.overlays.combined;
   };
@@ -382,19 +385,19 @@ in let this = rec {
       Cabal
       cabal-install
       ghcid
-      hasktags
-      hdevtools
-      hlint
-      stylish-haskell # Recent stylish-haskell only builds with AMP in place
+      # hasktags
+      # hdevtools
+      # hlint
+      # stylish-haskell # Recent stylish-haskell only builds with AMP in place
       reflex-ghci
       ;
     inherit (nixpkgs)
       cabal2nix
       curl
       nix-prefetch-scripts
-      nodejs
+      # nodejs
       pkgconfig
-      closurecompiler
+      # closurecompiler
       ;
   };
 

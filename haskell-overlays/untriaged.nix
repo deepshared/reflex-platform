@@ -23,10 +23,10 @@ in self: super: {
   haven = self.callHackage "haven" "0.2.0.2" {};
 
   # Update hlint and add new dependency
-  hlint = self.callHackage "hlint" "2.2.2" {};
-  ghc-lib-parser = self.callHackage "ghc-lib-parser" "8.8.0.20190723" {};
-  haskell-src-exts-util = self.callHackage "haskell-src-exts-util" "0.2.5" {};
-  stylish-haskell = self.callHackage "stylish-haskell" "0.9.2.2" {};
+  # hlint = self.callHackage "hlint" "2.2.2" {};
+  # ghc-lib-parser = self.callHackage "ghc-lib-parser" "8.8.0.20190723" {};
+  # haskell-src-exts-util = self.callHackage "haskell-src-exts-util" "0.2.5" {};
+  # stylish-haskell = self.callHackage "stylish-haskell" "0.9.2.2" {};
 
   # Fixing things that are marked broken in 19.03:
   butcher = doJailbreak (self.callHackage "butcher" "1.3.2.3" {});
@@ -73,7 +73,7 @@ in self: super: {
 
   # Packages not yet in 19.03
   semialign = self.callHackage "semialign" "1.1" {};
-  these = self.callHackage "these" "1.0.1" {};
+  # these = self.callHackage "these" "1.0.1" {};
   semialign-indexed = self.callHackage "semialign-indexed" "1.1" {}; # to work with semialign 1.1
   these-lens = doJailbreak (self.callHackage "these-lens" "1" {});
   # remove jailbreak after https://github.com/isomorphism/these/pull/134

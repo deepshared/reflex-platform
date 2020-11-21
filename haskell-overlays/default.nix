@@ -66,18 +66,16 @@ rec {
 
   combined-any-8 = self: super: foldExtensions [
     any-8
-    (optionalExtension (versionWildcard [ 8 6 ] (getGhcVersion super.ghc)) any-8_6)
-    (optionalExtension (lib.versionOlder "8.7"  (getGhcVersion super.ghc)) any-head)
+    (optionalExtension (versionWildcard [ 8 10 ] (getGhcVersion super.ghc)) any-8_10)
   ] self super;
 
   combined-ghc = self: super: foldExtensions [
-    (optionalExtension (versionWildcard [ 8 6 ] super.ghc.version) ghc-8_6)
-    (optionalExtension (lib.versionOlder "8.7"  super.ghc.version) ghc-head)
+    (optionalExtension (versionWildcard [ 8 10 ] super.ghc.version) ghc-8_10)
   ] self super;
 
   combined-ghcjs = self: super: foldExtensions [
     ghcjs
-    (optionalExtension (versionWildcard [ 8 6 ] super.ghc.ghcVersion) ghcjs-8_6)
+    (optionalExtension (versionWildcard [ 8 10 ] super.ghc.ghcVersion) ghcjs-8_6)
     (optionalExtension useFastWeak ghcjs-fast-weak)
   ] self super;
 
@@ -101,10 +99,12 @@ rec {
   any = _: _: {};
   any-8 = import ./any-8.nix { inherit haskellLib lib getGhcVersion; };
   any-8_6 = import ./any-8.6.nix { inherit haskellLib fetchFromGitHub; inherit (nixpkgs) pkgs; };
+  any-8_10 = import ./any-8.10.nix { inherit haskellLib fetchFromGitHub; inherit (nixpkgs) pkgs; };
   any-head = import ./any-head.nix { inherit haskellLib fetchFromGitHub; };
 
   # Just for GHC, usually to sync with GHCJS
   ghc-8_6 = _: _: {};
+  ghc-8_10 = _: _: {};
   ghc-head = _: _: {};
 
   profiling = import ./profiling.nix {
